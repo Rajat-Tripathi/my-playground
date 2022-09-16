@@ -1,0 +1,56 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <option name="LINE_SEPARATOR" value="&#13;&#10;" />
+    <option name="RIGHT_MARGIN" value="240" />
+    <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
+    <JavaCodeStyleSettings>
+      <option name="JD_DO_NOT_WRAP_ONE_LINE_COMMENTS" value="true" />
+      <option name="JD_PRESERVE_LINE_FEEDS" value="true" />
+      <option name="JD_INDENT_ON_CONTINUATION" value="true" />
+    </JavaCodeStyleSettings>
+    <ScalaCodeStyleSettings>
+      <option name="importLayout">
+        <array>
+          <option value="java" />
+          <option value="_______ blank line _______" />
+          <option value="base package imports" />
+          <option value="_______ blank line _______" />
+          <option value="all other imports" />
+          <option value="_______ blank line _______" />
+          <option value="scala" />
+        </array>
+      </option>
+      <option name="WRAP_BEFORE_WITH_KEYWORD" value="true" />
+      <option name="ALIGN_IF_ELSE" value="true" />
+      <option name="ALIGN_EXTENDS_WITH" value="3" />
+      <option name="ALIGN_IN_COLUMNS_CASE_BRANCH" value="true" />
+      <option name="ALIGN_TUPLE_ELEMENTS" value="true" />
+      <option name="SPACE_BEFORE_BRACE_METHOD_CALL" value="false" />
+      <option name="USE_SCALADOC2_FORMATTING" value="true" />
+      <option name="MULTILINE_STRING_CLOSING_QUOTES_ON_NEW_LINE" value="true" />
+      <option name="TYPE_ANNOTATION_PRIVATE_MEMBER" value="true" />
+      <option name="TYPE_ANNOTATION_UNIT_TYPE" value="false" />
+      <option name="TYPE_ANNOTATION_EXCLUDE_MEMBER_OF">
+        <set>
+          <option value="junit.framework.TestCase" />
+        </set>
+      </option>
+      <option name="ENABLE_SCALADOC_FORMATTING" value="false" />
+      <option name="SD_KEEP_BLANK_LINES_BETWEEN_TAGS" value="true" />
+      <option name="SD_PRESERVE_SPACES_IN_TAGS" value="true" />
+    </ScalaCodeStyleSettings>
+    <codeStyleSettings language="JAVA">
+      <option name="ALIGN_MULTILINE_CHAINED_METHODS" value="true" />
+      <option name="ALIGN_GROUP_FIELD_DECLARATIONS" value="true" />
+      <option name="ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS" value="true" />
+      <option name="WRAP_COMMENTS" value="true" />
+    </codeStyleSettings>
+    <codeStyleSettings language="Scala">
+      <option name="CATCH_ON_NEW_LINE" value="true" />
+      <option name="FINALLY_ON_NEW_LINE" value="true" />
+      <option name="ALIGN_MULTILINE_CHAINED_METHODS" value="true" />
+      <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="true" />
+      <option name="ALIGN_GROUP_FIELD_DECLARATIONS" value="true" />
+    </codeStyleSettings>
+  </code_scheme>
+</component>
