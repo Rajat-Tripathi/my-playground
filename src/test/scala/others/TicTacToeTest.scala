@@ -36,13 +36,13 @@ class TicTacToeTest extends AnyWordSpec with Matchers with MockitoSugar with Sca
     }
 
     //    "" in {
-    //      val row2   = List(
+    //      val row2 = List(
     //        Cell(x = 1, y = 2, value = Some(Player.X)),
     //        Cell(x = 2, y = 2, value = Some(Player.O)),
     //        Cell(x = 3, y = 2, value = Some(Player.O))
     //      )
     //
-    //      println(row2.map(_.output).mkString)
+    //      println(CellGrouping(row2, "").output)
     //    }
 
 

@@ -14,7 +14,8 @@ object TicTacToe {
   private val TOTAL_CELLS       : Int = GRID_SIZE * GRID_SIZE
 
   private def validateCells(cells: List[Cell]): Unit = {
-    require(cells.length == TOTAL_CELLS, s"All and only $TOTAL_CELLS cells input required for $GRID_SIZE X $GRID_SIZE grid !!")
+    require(cells.length == TOTAL_CELLS,
+      s"All and only $TOTAL_CELLS cells input required for $GRID_SIZE X $GRID_SIZE grid !!")
     cells.foreach{ cell =>
       if (cell.x < FIRST_CELL_ADDRESS
           || cell.x > LAST_CELL_ADDRESS
@@ -27,42 +28,37 @@ object TicTacToe {
     }
   }
 
-  def findWinner(cells: List[Cell]): Option[Winner] = {
-    validateCells(cells)
-    val verticalCells  = cells.groupBy(_.x).values.toSeq
-    val verticalWinner = scan(verticalCells)
-    if (verticalWinner.isDefined) {
-      println("Success in vertical")
-      verticalWinner
-    } else {
-      val horizontalCells  = cells.groupBy(_.y).values.toSeq
-      val horizontalWinner = scan(horizontalCells)
-      if (horizontalWinner.isDefined) {
-        println("Success in horizontal")
-        horizontalWinner
-      } else {
-        val upHillDiagonalCells   = cells.filter(_.isUpHillDiagonalCell)
-        val downHillDiagonalCells = cells.filter(_.isDownHillDiagonalCell(FIRST_CELL_ADDRESS, LAST_CELL_ADDRESS))
-        val diagonalCells         = Seq(upHillDiagonalCells, downHillDiagonalCells)
-        val diagonalWinner        = scan(diagonalCells)
-        if (diagonalWinner.isDefined) {
-          println("Success in diagonal")
-        }
-        diagonalWinner
-      }
-    }
+  private def showImage(horizontalGroupings: Seq[CellGrouping]): Unit = {
+    require(horizontalGroupings.nonEmpty, "No horizontal groupings found !!")
+    require(horizontalGroupings.forall(_.cells.nonEmpty), "Empty cell found !!")
+    val sortedFromBottomToTop = horizontalGroupings.sortBy(_.cells.head.y)
+    println(sortedFromBottomToTop.reverse.map(_.rowFromLeft).mkString)
   }
 
-  private def scan(groupings: Seq[List[Cell]]): Option[Winner] = {
+  def findWinner(cells: List[Cell]): Option[Winner] = {
+    validateCells(cells)
+    val verticalGroupings        = cells.groupBy(_.x).values.toSeq.map(cells => CellGrouping(cells, "vertical"))
+    val horizontalGroupings      = cells.groupBy(_.y).values.toSeq.map(cells => CellGrouping(cells, "horizontal"))
+    val upHillDiagonalCells      = cells.filter(_.isUpHillDiagonalCell)
+    val upHillDiagonalGrouping   = CellGrouping(upHillDiagonalCells, "uphill diagonal from left")
+    val downHillDiagonalCells    = cells.filter(_.isDownHillDiagonalCell(FIRST_CELL_ADDRESS, LAST_CELL_ADDRESS))
+    val downHillDiagonalGrouping = CellGrouping(downHillDiagonalCells, "downhill diagonal from left")
+    val totalGrouping            = verticalGroupings ++ horizontalGroupings :+ upHillDiagonalGrouping :+ downHillDiagonalGrouping
+    showImage(horizontalGroupings)
+    scanCellGroupings(totalGrouping)
+  }
+
+  private def scanCellGroupings(groupings: Seq[CellGrouping]): Option[Winner] = {
     @tailrec
-    def scanTailRec(toScan: Seq[List[Cell]], winner: Option[Winner]): Option[Winner] = {
-      if (toScan.isEmpty) winner
-      else {
-        val list = toScan.head
-        if (list.forall(_.value.contains(Player.X))) {
-          Some(Winner(Player.X, list))
-        } else if (list.forall(_.value.contains(Player.O))) {
-          Some(Winner(Player.O, list))
+    def scanTailRec(toScan: Seq[CellGrouping], winner: Option[Winner]): Option[Winner] = {
+      if (toScan.isEmpty) {
+        winner
+      } else {
+        val grouping = toScan.head
+        if (grouping.cells.forall(_.value.contains(Player.X))) {
+          Some(Winner(Player.X, grouping))
+        } else if (grouping.cells.forall(_.value.contains(Player.O))) {
+          Some(Winner(Player.O, grouping))
         } else {
           scanTailRec(toScan.tail, winner)
         }
@@ -90,19 +86,36 @@ final case class Cell(x: Int, y: Int, value: Option[Player] = None) {
     x + y == (firstCellAddress + lastCellAddress)
   }
 
-  def location: String = s"""(x : $x, y : $y)"""
+  def location: String = s"""(x:$x, y:$y)"""
 
 }
 
-final case class Winner(player: Player, cells: List[Cell]) {
+final case class CellGrouping(cells: List[Cell], direction: String) {
+
+  def rowFromLeft: String = {
+    val line  : String  = "------"
+    val isEven: Boolean = line.length % 2 == 0
+    val half  : Int     = line.length / 2
+    val leftMargin      = " " * (if (isEven) half - 1 else half)
+    val rightMargin     = " " * (if (isEven) half else half)
+    s"""
+       +${List.fill(cells.length)(line).mkString("+")}+
+       |${cells.sortBy(_.x).map(x => leftMargin + x.value.getOrElse(" ") + rightMargin).mkString("|")}|
+       +${List.fill(cells.length)(line).mkString("+")}+"""
+  }
+
+}
+
+final case class Winner(player: Player, grouping: CellGrouping) {
+
   def announceWinner(): Unit = {
-    val sorted = cells.sortBy(x => (x.x, x.y))
+    val sorted = grouping.cells.sortBy(x => (x.x, x.y))
     println{
       s"""
-         |${"*" * 30}
+         |${"*" * 70}
          |$player is the winner.
-         |Cells from ${sorted.head.location} to ${sorted.last.location}
-         |${"*" * 30}
+         |Cells from ${sorted.head.location} to ${sorted.last.location} : ${grouping.direction}
+         |${"*" * 70}
          |""".stripMargin
     }
   }

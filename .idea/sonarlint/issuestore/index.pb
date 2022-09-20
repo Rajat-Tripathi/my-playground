@@ -27,10 +27,6 @@ V
 &src/test/scala/string/RotateTest.scala,c\2\c2284d90bc3298d32d0ab0c1e05dd640ed6e5155
 T
 $src/test/scala/clock/ClockTest.scala,3\9\394a9d1316fa23c0c4d3fda25a5f6199c7ca4350
-P
- src/main/scala/clock/Clock.scala,3\a\3a1eeb5fc1beefcc4c74f30874ad59bd8d8bc5d2
-T
-$src/main/scala/utility/Utility.scala,7\1\7134979d5d8436d84a91c63afe62b0d4d332562e
 Y
 )src/test/scala/string/CountCharTest.scala,7\d\7d050f6e64eb41a08ccd0f0d94579f54ae3f30ac
 Y
@@ -41,3 +37,7 @@ X
 (src/test/scala/others/GeometryTest.scala,9\5\958270f367720b843c247a5e6c9a19afb6fc0bba
 T
 $src/main/scala/others/Geometry.scala,6\4\646dd4f3984083802b3d10ce8d0266e2c6bf4dca
+T
+$src/main/scala/utility/Utility.scala,7\1\7134979d5d8436d84a91c63afe62b0d4d332562e
+P
+ src/main/scala/clock/Clock.scala,3\a\3a1eeb5fc1beefcc4c74f30874ad59bd8d8bc5d2
