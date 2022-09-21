@@ -1,4 +1,4 @@
-package others
+package regulator
 
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
@@ -69,58 +69,44 @@ sealed case class Attempt(totalAttempt: Int, timeStamp: DateTime) {
 
 }
 
-
 object AttemptRegulator {
 
-  private val regulatorMap: mutable.Map[String, AttemptRegulator] = mutable.Map.empty
+  private val registry: mutable.Map[String, AttemptRegulator] = mutable.Map.empty
 
-  def regulate[O](orgCode: String)(fn: => O)(implicit maxAttempt: Int, waitDuration: FiniteDuration): O = {
-    val stackTraceElement  = Thread.currentThread.getStackTrace()(2)
-    val methodName: String = stackTraceElement.getMethodName
-    val className : String = stackTraceElement.getClassName
-    val lineNumber: Int    = stackTraceElement.getLineNumber
-    val key       : String = orgCode + "_" + className + "_" + methodName + "_" + lineNumber
-    regulatorMap.getOrElse(key, {
-      val regulator = new AttemptRegulator(maxAttempt, waitDuration)
+  private def getCompileTimeKey(ste: StackTraceElement): String = {
+    ste.getClassName + "_" + ste.getMethodName + "_" + ste.getLineNumber
+  }
+
+  private def getAttemptRegulator[O](key: String)(implicit conf: Conf): AttemptRegulator = this.synchronized{
+    registry.getOrElse(key, {
+      val regulator = new AttemptRegulator(conf.maxAttempt, conf.waitDuration)
       println(s"Created new AttemptRegulator with key = $key")
-      regulatorMap.put(key, regulator)
+      registry.put(key, regulator)
       regulator
-    }).regulate{
-      fn
+    })
+  }
+
+  /** To regulate per org level */
+  def regulate[O](orgCode: String)(fn: => O)(implicit conf: Conf): O = {
+    val stackTraceElements = Thread.currentThread.getStackTrace
+    if (stackTraceElements.length >= 3) {
+      val compileTimeKey = getCompileTimeKey(stackTraceElements(2))
+      val key: String    = orgCode + "_" + compileTimeKey
+      getAttemptRegulator(key).regulate(fn)
+    } else {
+      throw new Exception("Could not get stack trace elements !!")
     }
   }
 
-}
-
-object CheckAttemptRegulator extends App {
-
-  private def sendEmail(): Unit = {
-    println("sending Email ..")
+  /** To regulate globally */
+  def regulate[O](fn: => O)(implicit conf: Conf): O = {
+    val stackTraceElements = Thread.currentThread.getStackTrace
+    if (stackTraceElements.length >= 3) {
+      val key = getCompileTimeKey(stackTraceElements(2))
+      getAttemptRegulator(key).regulate(fn)
+    } else {
+      throw new Exception("Could not get stack trace elements !!")
+    }
   }
-
-  //  private val regulator = new AttemptRegulator(1, 10, TimeUnit.SECONDS)
-
-
-  import AttemptRegulator._
-
-  implicit val maxAttempt  : Int            = 1
-  implicit val waitDuration: FiniteDuration = FiniteDuration(10, TimeUnit.SECONDS)
-
-  def callEmailService(orgCode: String): Unit = regulate(orgCode){
-    sendEmail()
-  }
-
-  def callEmailService2(orgCode: String): Unit = regulate(orgCode){
-    sendEmail()
-  }
-
-  val orgCode = "devum"
-  (1 to 50).foreach{ x =>
-    Thread.sleep(1500)
-    callEmailService(orgCode)
-    callEmailService2(orgCode)
-  }
-
-  Thread.sleep(5000)
 
 }
