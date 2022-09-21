@@ -15,12 +15,12 @@ class Regulator(maxPerSecond: Int, maxPerDay: Int) {
   }
 
   /** Checks for quota */
-  private def checkForQuota: Either[String, Boolean] = {
+  private def checkForQuota: Either[String, Boolean] = this.synchronized{
     val counter = counterRef.get()
     if (counter.totalAttempt < maxPerDay) {
-      val sec = counter.getSeconds
+      val sec = counter.getTimeElapsedInSeconds
       if (sec <= 1 && counter.perSecAttempt < maxPerSecond) {
-        counterRef.set(counter.incrementNow())
+        counterRef.set(counter.increment())
         Right(true)
       } else if (sec <= 1) {
         Left("Max attempts per second quota exceeded !!")
@@ -52,7 +52,7 @@ class Regulator(maxPerSecond: Int, maxPerDay: Int) {
 sealed case class Counter(perSecAttempt: Int, totalAttempt: Int, timeStamp: DateTime) {
 
   /** Increment attempts count */
-  def incrementNow(): Counter = Counter(this.perSecAttempt + 1, this.totalAttempt + 1, DateTime.now())
+  def increment(): Counter = Counter(this.perSecAttempt + 1, this.totalAttempt + 1, DateTime.now())
 
   /** Resets total attempts count for the second for the next second */
   def resetPerSecAttempt(): Counter = Counter(1, this.totalAttempt + 1, DateTime.now())
@@ -61,7 +61,7 @@ sealed case class Counter(perSecAttempt: Int, totalAttempt: Int, timeStamp: Date
   def resetPerDayAttempt(): Counter = Counter(this.perSecAttempt + 1, 1, DateTime.now())
 
   /** Gets seconds between last attempt timeStamp and current timestamp */
-  def getSeconds: Int = {
+  def getTimeElapsedInSeconds: Int = {
     Seconds.secondsBetween(this.timeStamp, DateTime.now()).getSeconds
   }
 
