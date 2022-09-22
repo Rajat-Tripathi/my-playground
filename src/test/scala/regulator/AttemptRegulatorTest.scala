@@ -1,6 +1,6 @@
 package regulator
 
-import regulator.AttemptRegulator.regulate
+import regulator.AttemptRegulator._
 import regulator.AttemptRegulatorConf.Implicits.general
 
 /**

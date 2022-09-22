@@ -17,7 +17,7 @@ import scala.concurrent.duration.FiniteDuration
   * @param maxAttempt : Max no. of attempt between subsequent duration.
   * @param waitDuration : Time period to wait between subsequent max attempts.
   */
-class AttemptRegulator(maxAttempt: Int, waitDuration: FiniteDuration) {
+sealed class AttemptRegulator(maxAttempt: Int, waitDuration: FiniteDuration) {
 
   def this(maxAttempt: Int, length: Long, unit: TimeUnit) = {
     this(maxAttempt, FiniteDuration(length, unit))
@@ -73,8 +73,13 @@ object AttemptRegulator {
 
   private val registry: mutable.Map[String, AttemptRegulator] = mutable.Map.empty
 
-  private def getCompileTimeKey(ste: StackTraceElement): String = {
-    ste.getClassName + "_" + ste.getMethodName + "_" + ste.getLineNumber
+  private def getCompileTimeKey(stackTraceElements: Array[StackTraceElement]): String = {
+    if (stackTraceElements.length >= 3) {
+      val ste = stackTraceElements(2)
+      ste.getClassName + "_" + ste.getMethodName + "_" + ste.getLineNumber
+    } else {
+      throw new Exception("Could not get stack trace elements !!")
+    }
   }
 
   private def getAttemptRegulator[O](key: String)(implicit conf: Conf): AttemptRegulator = this.synchronized{
@@ -88,25 +93,17 @@ object AttemptRegulator {
 
   /** To regulate per org level */
   def regulate[O](orgCode: String)(fn: => O)(implicit conf: Conf): O = {
-    val stackTraceElements = Thread.currentThread.getStackTrace
-    if (stackTraceElements.length >= 3) {
-      val compileTimeKey = getCompileTimeKey(stackTraceElements(2))
-      val key: String    = orgCode + "_" + compileTimeKey
-      getAttemptRegulator(key).regulate(fn)
-    } else {
-      throw new Exception("Could not get stack trace elements !!")
-    }
+    val stackTraceElements     = Thread.currentThread.getStackTrace
+    val compileTimeKey: String = getCompileTimeKey(stackTraceElements)
+    val key           : String = orgCode + "_" + compileTimeKey
+    getAttemptRegulator(key).regulate(fn)
   }
 
   /** To regulate globally */
   def regulate[O](fn: => O)(implicit conf: Conf): O = {
-    val stackTraceElements = Thread.currentThread.getStackTrace
-    if (stackTraceElements.length >= 3) {
-      val key = getCompileTimeKey(stackTraceElements(2))
-      getAttemptRegulator(key).regulate(fn)
-    } else {
-      throw new Exception("Could not get stack trace elements !!")
-    }
+    val stackTraceElements     = Thread.currentThread.getStackTrace
+    val compileTimeKey: String = getCompileTimeKey(stackTraceElements)
+    getAttemptRegulator(compileTimeKey).regulate(fn)
   }
 
 }
