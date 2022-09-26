@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
 
 import org.joda.time.{DateTime, Seconds}
+import utility.Utility
 
 import scala.collection.mutable
 import scala.concurrent.duration.FiniteDuration
@@ -73,15 +74,6 @@ object AttemptRegulator {
 
   private val registry: mutable.Map[String, AttemptRegulator] = mutable.Map.empty
 
-  private def getCompileTimeKey(stackTraceElements: Array[StackTraceElement]): String = {
-    if (stackTraceElements.length >= 3) {
-      val ste = stackTraceElements(2)
-      ste.getClassName + "_" + ste.getMethodName + "_" + ste.getLineNumber
-    } else {
-      throw new Exception("Could not get stack trace elements !!")
-    }
-  }
-
   private def getAttemptRegulator[O](key: String)(implicit conf: Conf): AttemptRegulator = this.synchronized{
     registry.getOrElse(key, {
       val regulator = new AttemptRegulator(conf.maxAttempt, conf.waitDuration)
@@ -94,7 +86,7 @@ object AttemptRegulator {
   /** To regulate per org level */
   def regulate[O](orgCode: String)(fn: => O)(implicit conf: Conf): O = {
     val stackTraceElements     = Thread.currentThread.getStackTrace
-    val compileTimeKey: String = getCompileTimeKey(stackTraceElements)
+    val compileTimeKey: String = Utility.getCompileTimeKey(stackTraceElements)
     val key           : String = orgCode + "_" + compileTimeKey
     getAttemptRegulator(key).regulate(fn)
   }
@@ -102,7 +94,7 @@ object AttemptRegulator {
   /** To regulate globally */
   def regulate[O](fn: => O)(implicit conf: Conf): O = {
     val stackTraceElements     = Thread.currentThread.getStackTrace
-    val compileTimeKey: String = getCompileTimeKey(stackTraceElements)
+    val compileTimeKey: String = Utility.getCompileTimeKey(stackTraceElements)
     getAttemptRegulator(compileTimeKey).regulate(fn)
   }
 

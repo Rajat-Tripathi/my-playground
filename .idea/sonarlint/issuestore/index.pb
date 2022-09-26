@@ -35,10 +35,6 @@ U
 %src/main/scala/map/MapExtractor.scala,1\b\1b3c365dd7b4f9d2f7023651026e64baa75a8c0a
 X
 (src/test/scala/others/GeometryTest.scala,9\5\958270f367720b843c247a5e6c9a19afb6fc0bba
-T
-$src/main/scala/others/Geometry.scala,6\4\646dd4f3984083802b3d10ce8d0266e2c6bf4dca
-T
-$src/main/scala/utility/Utility.scala,7\1\7134979d5d8436d84a91c63afe62b0d4d332562e
 U
 %src/main/scala/others/TicTacToe.scala,6\3\6375b243cf3fede72ce0ccfa23951563cb3b7742
 P
@@ -47,3 +43,7 @@ U
 %src/main/scala/others/Regulator.scala,3\1\31dd4d81f0e09b42ef2671d94b39cc6ba5e0c9c4
 c
 3src/main/scala/regulator/AttemptRegulatorConf.scala,1\9\19c1351dd928595918a52df872f1d6c682058fb0
+X
+(src/main/scala/regulator/regulator.scala,0\8\083f412f822418e382baf44ede7e96b6d9088fb6
+Y
+)src/test/scala/others/TicTacToeTest.scala,0\1\01392aacca4a14f852e314ca103d1ec170004531

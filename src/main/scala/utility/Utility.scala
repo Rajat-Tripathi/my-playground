@@ -38,4 +38,13 @@ object Utility {
     }
   }
 
+  def getCompileTimeKey(stackTraceElements: Array[StackTraceElement]): String = {
+    if (stackTraceElements.length >= 3) {
+      val ste = stackTraceElements(2)
+      ste.getClassName + "_" + ste.getMethodName + "_" + ste.getLineNumber
+    } else {
+      throw new Exception("Could not get stack trace elements !!")
+    }
+  }
+
 }

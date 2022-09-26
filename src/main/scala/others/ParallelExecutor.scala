@@ -2,6 +2,8 @@ package others
 
 import java.util.concurrent.atomic.AtomicInteger
 
+import utility.Utility
+
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -10,11 +12,11 @@ import scala.concurrent.Future
   * Created by Rajat on Sep 23, 2022.
   */
 
-class ParallelExecutor {
+class ParallelExecutor(maxParallelExecution: Int) {
 
   private val counter = new AtomicInteger(0)
 
-  final def parallelism[T](maxParallelExecution: Int)(fn: => Future[T]): Future[T] = {
+  final def parallelism[T](fn: => Future[T]): Future[T] = {
     require(maxParallelExecution >= 0, "maxParallelExecution can't be negative !!")
     if (counter.get() < maxParallelExecution) {
       counter.incrementAndGet()
@@ -37,18 +39,9 @@ object ParallelExecutor {
 
   private val registry: mutable.Map[String, ParallelExecutor] = mutable.Map.empty
 
-  private def getCompileTimeKey(stackTraceElements: Array[StackTraceElement]): String = {
-    if (stackTraceElements.length >= 3) {
-      val ste = stackTraceElements(2)
-      ste.getClassName + "_" + ste.getMethodName + "_" + ste.getLineNumber
-    } else {
-      throw new Exception("Could not get stack trace elements !!")
-    }
-  }
-
-  private def getParallelExecutor[O](key: String): ParallelExecutor = this.synchronized{
+  private def getParallelExecutor[O](key: String, maxParallelExecution: Int): ParallelExecutor = this.synchronized{
     registry.getOrElse(key, {
-      val executor = new ParallelExecutor
+      val executor = new ParallelExecutor(maxParallelExecution)
       println(s"Created new ParallelExecutor with key = '$key' ")
       registry.put(key, executor)
       executor
@@ -58,8 +51,8 @@ object ParallelExecutor {
   /** To control max parallel execution of Futures */
   def parallelism[T](maxParallelExecution: Int)(fn: => Future[T]): Future[T] = {
     val stackTraceElements = Thread.currentThread.getStackTrace
-    val key: String        = getCompileTimeKey(stackTraceElements)
-    getParallelExecutor(key).parallelism(maxParallelExecution)(fn)
+    val key: String        = Utility.getCompileTimeKey(stackTraceElements)
+    getParallelExecutor(key, maxParallelExecution).parallelism(fn)
   }
 
 }
