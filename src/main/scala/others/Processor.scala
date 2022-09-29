@@ -13,7 +13,7 @@ import scala.util.Random
   * Created by Rajat on Sep 25, 2022.
   */
 
-class Processor[I, O] {
+private class Processor[I, O] {
 
   private val inputBuffer = new AtomicReference[Seq[I]](Nil)
 
@@ -38,7 +38,7 @@ class Processor[I, O] {
     }
   }
 
-  def oneAtATime(input: I)(fn: I => Future[O]): Unit = {
+  def oneAtATime(input: I)(fn: I => Future[O]): Unit = this.synchronized{
     if (inputBuffer.get().isEmpty) {
       inputBuffer.set(inputBuffer.get() :+ input)
       println("Starting the process ...")
