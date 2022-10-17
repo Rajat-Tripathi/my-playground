@@ -7,12 +7,6 @@ Z
 *src/test/scala/string/RansomNoteTest.scala,d\1\d1ab571b1e31969111529efd4033fcda1f9f9d79
 ]
 -src/test/scala/string/FindWordCountTest.scala,d\6\d6f77e32a862957fffca7c08c85f677001905aed
-9
-	build.sbt,7\4\74b95601c3a6d9d565cd312fac64094ec0f9d847
-I
-project/TestLibrary.scala,9\d\9d72e11620027a1aaef5cd387e05696a6387786d
-J
-project/Dependencies.scala,f\0\f0b888588c7dc7c3642199a83d33e377409e9d1a
 Z
 *src/main/scala/design/CircuitBreaker.scala,4\c\4cf59b01c586ba19ec82cacf62e476d54e149839
 Y
@@ -49,11 +43,13 @@ Y
 )src/test/scala/others/TicTacToeTest.scala,0\1\01392aacca4a14f852e314ca103d1ec170004531
 c
 3src/test/scala/regulator/AttemptRegulatorTest.scala,1\9\192d7391c1e0d5dbe845b40b0777e119ef4980e7
-T
-$src/main/scala/others/Geometry.scala,6\4\646dd4f3984083802b3d10ce8d0266e2c6bf4dca
-T
-$src/main/scala/utility/Utility.scala,7\1\7134979d5d8436d84a91c63afe62b0d4d332562e
 _
 /src/main/scala/regulator/AttemptRegulator.scala,a\7\a7f0b283716154062b982e0c88cf5a33b86f1610
-\
-,src/main/scala/others/ParallelExecutor.scala,7\4\74d06e30e3578034ca211536b8281a01642ac582
+=
+.bsp/sbt.json,2\d\2d1c848107550a7cf7f00ddb405f3bba740cc5b5
+T
+$src/main/scala/utility/Utility.scala,7\1\7134979d5d8436d84a91c63afe62b0d4d332562e
+T
+$src/main/scala/others/Geometry.scala,6\4\646dd4f3984083802b3d10ce8d0266e2c6bf4dca
+U
+%src/main/scala/others/Processor.scala,a\c\ac8f8828e22675f9d043d0bdba3fe8c1bbc6af03

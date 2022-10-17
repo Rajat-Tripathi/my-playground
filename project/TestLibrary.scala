@@ -11,4 +11,5 @@ object TestLibrary {
   val mockitCore = "org.mockito" % "mockito-core" % "3.12.1" % Test
   val jodaTime = "joda-time" % "joda-time" % "2.10.10"
   val scalaTestPlusMockito        = "org.scalatestplus" %% "mockito-3-4" % "3.2.9.0" % Test
+  val akkaKit             = "com.typesafe.akka" %% "akka-actor" % "2.6.9"
 }

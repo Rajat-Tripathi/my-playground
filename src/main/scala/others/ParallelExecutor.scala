@@ -14,10 +14,11 @@ import scala.concurrent.Future
 
 class ParallelExecutor(maxParallelExecution: Int) {
 
+  require(maxParallelExecution >= 0, "maxParallelExecution can't be negative !!")
+
   private val counter = new AtomicInteger(0)
 
   final def parallelism[T](fn: => Future[T]): Future[T] = {
-    require(maxParallelExecution >= 0, "maxParallelExecution can't be negative !!")
     if (counter.get() < maxParallelExecution) {
       counter.incrementAndGet()
       fn.transform(s => {
@@ -74,7 +75,7 @@ object ParallelExecutorTest extends App {
   }
 
   (1 to 50).foreach{ x =>
-    Thread.sleep(1000)
+    //    Thread.sleep(1000)
     executor(x)
   }
 

@@ -8,7 +8,7 @@ object Dependencies {
 
   val myPlaygroundTestDependencies: Seq[ModuleID] = {
     import TestLibrary._
-    Seq(scalaTest, mockitCore, scalaTestPlusMockito, jodaTime)
+    Seq(scalaTest, mockitCore, scalaTestPlusMockito, jodaTime, akkaKit)
   }
 
 }
