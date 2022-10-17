@@ -8,6 +8,6 @@ import akka.actor.ActorSystem
 
 object ActorSystemImplicits {
 
-  implicit lazy val system: ActorSystem = ActorSystem("ReactorActorSystem")
+  implicit lazy val system: ActorSystem = ActorSystem("PlayGroundActorSystem")
 
 }
