@@ -23,8 +23,6 @@ Y
 )src/test/scala/others/TicTacToeTest.scala,0\1\01392aacca4a14f852e314ca103d1ec170004531
 =
 .bsp/sbt.json,2\d\2d1c848107550a7cf7f00ddb405f3bba740cc5b5
-U
-%src/main/scala/others/Processor.scala,a\c\ac8f8828e22675f9d043d0bdba3fe8c1bbc6af03
 9
 	build.sbt,7\4\74b95601c3a6d9d565cd312fac64094ec0f9d847
 w
@@ -48,11 +46,7 @@ P
 w
 G.idea/sonarlint/issuestore/a/c/ac8f8828e22675f9d043d0bdba3fe8c1bbc6af03,7\1\71ebc43c06adab1a132ce7ed419f7851a0cfecdc
 w
-G.idea/sonarlint/issuestore/6/3/6375b243cf3fede72ce0ccfa23951563cb3b7742,5\6\568b34a546b36d5293be394751dbab86717d324b
-w
 G.idea/sonarlint/issuestore/2/d/2d1c848107550a7cf7f00ddb405f3bba740cc5b5,1\5\15455485ff144f34544c357b9c13ec4346d5599c
-w
-G.idea/sonarlint/issuestore/3/1/31dd4d81f0e09b42ef2671d94b39cc6ba5e0c9c4,3\1\314b25ab77f73c56f3d83e620db28f40f3d6df0d
 J
 project/Dependencies.scala,f\0\f0b888588c7dc7c3642199a83d33e377409e9d1a
 e
@@ -75,3 +69,23 @@ T
 $src/main/scala/others/Geometry.scala,6\4\646dd4f3984083802b3d10ce8d0266e2c6bf4dca
 _
 /src/main/scala/others/InstantMessagingApp.scala,7\f\7f71dbc0a27ed3d87ce7ee4c159181f279c20d4b
+R
+"src/main/scala/string/Rotate.scala,0\4\04343bf8c45a121ea0b866452c2cc1354b8f51da
+X
+(src/main/scala/regulator/regulator.scala,0\8\083f412f822418e382baf44ede7e96b6d9088fb6
+Z
+*src/main/scala/design/CircuitBreaker.scala,4\c\4cf59b01c586ba19ec82cacf62e476d54e149839
+U
+%src/main/scala/map/MapExtractor.scala,1\b\1b3c365dd7b4f9d2f7023651026e64baa75a8c0a
+]
+-src/test/scala/string/FindWordCountTest.scala,d\6\d6f77e32a862957fffca7c08c85f677001905aed
+U
+%src/main/scala/others/Regulator.scala,3\1\31dd4d81f0e09b42ef2671d94b39cc6ba5e0c9c4
+X
+(src/test/scala/others/GeometryTest.scala,9\5\958270f367720b843c247a5e6c9a19afb6fc0bba
+S
+#.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
+\
+,src/main/scala/string/FrequencyMonitor.scala,3\5\35100cb804f0d4c22e370cf34ead9f7ab495b4f8
+`
+0src/test/scala/string/FrequencyMonitorTest.scala,3\d\3db7f50d45dbf7e1b006795ee4e1f8ececa942d3

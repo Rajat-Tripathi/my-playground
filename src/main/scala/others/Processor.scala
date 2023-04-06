@@ -55,11 +55,9 @@ object Processor {
   private val registry: mutable.Map[String, Processor[_, _]] = mutable.Map.empty
 
   private def getProcessor[I, O](key: String): Processor[I, O] = this.synchronized{
-    registry.getOrElse(key, {
-      val executor = new Processor[I, O]
+    registry.getOrElseUpdate(key, {
       println(s"Created new Processor with key = '$key' ")
-      registry.put(key, executor)
-      executor
+      new Processor[I, O]
     }).asInstanceOf[Processor[I, O]]
   }
 
